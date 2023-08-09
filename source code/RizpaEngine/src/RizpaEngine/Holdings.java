@@ -22,6 +22,9 @@ public class Holdings {
             userHoldings.put(stockItem.getStockSymbol(), stockItem);
         }
     }
+    public Holdings(){
+        this.userHoldings = new HashMap<>();
+    }
     private void checkDuplicates(StockItem stockItem) throws FileException{
         if(userHoldings.containsKey(stockItem.getStockSymbol()))
             throw new FileException("Double stock symbol found.", new IOException());

@@ -1,3 +1,9 @@
+package RizpaDTO;
+
+import RizpaDTO.DTOStock;
+import RizpaEngine.Stock;
+import RizpaEngine.Stocks;
+
 import java.util.HashMap;
 import java.util.Map;
 

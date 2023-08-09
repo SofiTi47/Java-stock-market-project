@@ -1,3 +1,8 @@
+package RizpaDTO;
+
+import RizpaEngine.Stock;
+import RizpaEngine.Transaction;
+
 import java.util.LinkedList;
 import java.util.List;
 
@@ -5,7 +10,8 @@ public class DTOStock {
     private final String stockSymbol;
     private final String CompanyName;
     private final int stockRate;
-
+    private int accumTurnover;
+    private int userHolding;
     private final List<DTOTransaction> pendingBuy;
     private final List<DTOTransaction> pendingSell;
     private final List<DTOTransaction> completedTransactions;
@@ -20,6 +26,8 @@ public class DTOStock {
         copyLists(stock.getPendingSell(),this.pendingSell);
         this.completedTransactions = new LinkedList<>();
         copyLists(stock.getCompletedTransactions(),this.completedTransactions);
+        this.accumTurnover = completedTransactions.stream()
+                .mapToInt(DTOTransaction::getTransactionTotal).sum();
     }
     private void copyLists(List<Transaction> src, List<DTOTransaction> dest) {
         for(Transaction transaction : src) {
@@ -31,13 +39,18 @@ public class DTOStock {
         int totalCompleted = completedTransactions.stream()
                 .mapToInt(DTOTransaction::getTransactionTotal).sum();
         int totalTransactions = completedTransactions.size();
-        return  "Stock symbol=" + stockSymbol +
+        return  "RizpaEngine.Stock symbol=" + stockSymbol +
                 ", Company name=" + CompanyName +
-                ", Stock rate=" + stockRate +
+                ", RizpaEngine.Stock rate=" + stockRate +
                 ", Total transactions=" + totalTransactions +
                 ", Total of completed transactions="+totalCompleted;
     }
 
+    public String basicString(){
+        return "cName"+": "+CompanyName+"\n"
+                +"symbol"+": "+stockSymbol+"\n"
+                +"stockrate"+": "+stockRate+"\n";
+    }
     @Override
     //returns a string of full data
     public String toString() {
@@ -60,6 +73,8 @@ public class DTOStock {
         return completedTransactions;
     }
 
+    public int getStockRate() { return stockRate;}
+    public String getCompanyName() {return CompanyName;}
     //returns a string of full data
     public String listToString(List<DTOTransaction> transactionList) {
         return basicListToString(transactionList) +
@@ -81,5 +96,9 @@ public class DTOStock {
             toString.append("none");
         toString.append("]");
         return toString.toString();
+    }
+
+    public void setUserHolding(int userHolding) {
+        this.userHolding = userHolding;
     }
 }

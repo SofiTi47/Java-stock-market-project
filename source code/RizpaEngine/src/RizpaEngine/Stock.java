@@ -30,6 +30,15 @@ public class Stock{
         pendingSell = new LinkedList<>();
         completedTransactions = new LinkedList<>();
     }
+    public Stock(String symbol, String companyName, int rate){
+        this.stockSymbol = symbol;
+        this.companyName = companyName;
+        this.companyName = Character.toUpperCase(companyName.charAt(0)) + companyName.substring(1);
+        this.stockRate = rate;
+        pendingBuy = new LinkedList<>();
+        pendingSell = new LinkedList<>();
+        completedTransactions = new LinkedList<>();
+    }
     public List<Transaction> addTransaction(int rate, int stockAmount, TransactionType type,
                                             ActionType actionType, User initiator) {
         List<Transaction> createdTransactions = new LinkedList<>();
@@ -85,8 +94,12 @@ public class Stock{
                           List<Transaction> createdTransactions) {
         if (pendingTransaction.getStockAmount() >= request.getStockAmount())
             addCompletedRequest(pendingTransaction,request,createdTransactions);
-        else
-            addIncompleteRequest(pendingTransaction,request,createdTransactions);
+        else {
+            if(request.getTransactionType() == TransactionType.FOK){
+                request.setIncomplete();
+            }
+            addIncompleteRequest(pendingTransaction, request, createdTransactions);
+        }
 
     }
 
@@ -129,16 +142,18 @@ public class Stock{
         pendingTransaction.setCompleted();
         pendingTransaction.setExecutor(request.getInitiator());
         completedTransactions.add(0,pendingTransaction);
-        createdTransactions.add(pendingTransaction);
-        setStockRate(pendingTransaction.getRate());
-        if(request.getTransactionType() == TransactionType.MKT)
-            request.setRate(getStockRate());
-        switch (request.getActionType()) {
-            case BUY:
-                insertTransaction(request, pendingBuy, BUY);
-                break;
-            case SELL:
-                insertTransaction(request, pendingSell, SELL);
+        if(request.getTransactionType() != TransactionType.IOC) {
+            createdTransactions.add(pendingTransaction);
+            setStockRate(pendingTransaction.getRate());
+            if (request.getTransactionType() == TransactionType.MKT)
+                request.setRate(getStockRate());
+            switch (request.getActionType()) {
+                case BUY:
+                    insertTransaction(request, pendingBuy, BUY);
+                    break;
+                case SELL:
+                    insertTransaction(request, pendingSell, SELL);
+            }
         }
     }
     private Transaction createCompletedSellTransaction(int rate, int stockAmount, String timeStamp,

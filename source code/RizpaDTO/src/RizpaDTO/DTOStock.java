@@ -10,7 +10,8 @@ public class DTOStock {
     private final String stockSymbol;
     private final String CompanyName;
     private final int stockRate;
-
+    private int accumTurnover;
+    private int userHolding;
     private final List<DTOTransaction> pendingBuy;
     private final List<DTOTransaction> pendingSell;
     private final List<DTOTransaction> completedTransactions;
@@ -25,6 +26,8 @@ public class DTOStock {
         copyLists(stock.getPendingSell(),this.pendingSell);
         this.completedTransactions = new LinkedList<>();
         copyLists(stock.getCompletedTransactions(),this.completedTransactions);
+        this.accumTurnover = completedTransactions.stream()
+                .mapToInt(DTOTransaction::getTransactionTotal).sum();
     }
     private void copyLists(List<Transaction> src, List<DTOTransaction> dest) {
         for(Transaction transaction : src) {
@@ -43,6 +46,11 @@ public class DTOStock {
                 ", Total of completed transactions="+totalCompleted;
     }
 
+    public String basicString(){
+        return "cName"+": "+CompanyName+"\n"
+                +"symbol"+": "+stockSymbol+"\n"
+                +"stockrate"+": "+stockRate+"\n";
+    }
     @Override
     //returns a string of full data
     public String toString() {
@@ -88,5 +96,9 @@ public class DTOStock {
             toString.append("none");
         toString.append("]");
         return toString.toString();
+    }
+
+    public void setUserHolding(int userHolding) {
+        this.userHolding = userHolding;
     }
 }

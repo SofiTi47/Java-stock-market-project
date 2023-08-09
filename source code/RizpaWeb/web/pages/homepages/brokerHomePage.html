@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Broker Homepage</title>
+    <link rel="stylesheet" href="brokerPage.css">
+    <script src="../../common/jquery-2.0.3.min.js"></script>
+    <script src="../../common/context-path-helper.js"></script>
+    <script src="brokerHomePage.js"></script>
+    <script src="Menus.js"></script>
+    <script src ="jquery.form.js"></script>
+</head>
+<body>
+<!-- Navbar Section -->
+<nav class="navbar">
+    <div class="navbar__container">
+        <a href="#stocks" id="navbar__logo">Rizpa Stock Exchange</a>
+        <div class="navbar__toggle" id="mobile-menu">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+        </div>
+        <ul class="navbar__menu">
+            <li class="navbar__item">
+                <a href="#totalFundsForm" class="navbar__links" id="totalFunds">Funds</a>
+            </li>
+            <li class="navbar_items">
+                <a href="#stocks" class="navbar__links" id="stocks-page">All Stocks</a>
+            </li>
+            <li class="navbar_items">
+                <a href="#transactions" class="navbar__links" id="transactions-page">Transactions</a>
+            </li>
+            <li class="navbar_items">
+                <a href="#loadXML" class="navbar__links" id="loadXML-page">Load XML</a>
+            </li>
+            <li class="navbar_items">
+                <a href="#issueStock" class="navbar__links" id="newStock-page">Issue Stock</a>
+            </li>
+            <li class="navbar__item">
+                <a href="#onlineUsers" class="navbar__links" id="online-users">Online Users</a>
+            </li>
+            <li class="navbar__item">
+                <a href="#userUpdates" class="navbar__links" id="user-updates">Updates</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<!-- Stocks Section -->
+<div class="Stocks" id="stocks">
+    <div class="stock">
+        <table style="width:100%" class="stocktable" id="stocktable">
+            <caption class="table__heading">Rizpa Exchange Stocks</caption>
+            <thead>
+            <tr>
+                <th>Company name</th>
+                <th>Symbol</th>
+                <th>Current rate</th>
+                <th>Accumulated turnover</th>
+            </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+
+
+<!-- Transactions Section -->
+<div class="Transaction" id="transactions">
+    <div id= "transactionsDiv">
+        <table style="width:100%" id="historytable">
+            <caption class="table__heading">Transaction History</caption>
+            <thead>
+            <tr>
+                <th>Transaction type</th>
+                <th>Date</th>
+                <th>Total</th>
+                <th>Balance Before</th>
+                <th>Balance After</th>
+            </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+
+<!-- Load XML Section -->
+<div class="loadFile" id="loadXML">
+    <div class="loadFile__container">
+        <form class = "box" action="../ReadXMLServlet" enctype="multipart/form-data" method="POST" id="ReadXMLFile">
+            <h1 class="Formlbl">Load XML</h1>
+            <input type="file" id="file" name="file" accept=".xml" required>
+            <input type="Submit" value="Upload File">
+            <div id="XML-Error-Placeholder"></div>
+        </form>
+    </div>
+</div>
+
+<!-- Add new stock Section -->
+<div class="issueStock" id="issueStock">
+    <div class="issueStock__container">
+        <form class = "box" method="POST" action="../StockTableServlet" id="addStock">
+            <h1 class="Formlbl">Issue Stock</h1>
+            <input type="text" name="symbol" placeholder="Symbol" required>
+            <input type="text" name="companyName" placeholder="Company Name" required>
+            <input type="number" name="stockAmount" min="1" placeholder="Amount" required oninput="validity.valid||(value='');">
+            <input type="number" name="companyRate" min="1" placeholder="Stock rate" required oninput="validity.valid||(value='');">
+            <input type="submit" value="Add Stock">
+            <div id="Stock-Error-Placeholder"></div>
+        </form>
+    </div>
+</div>
+
+<!-- Add funds Section -->
+<div class="addFunds" id="totalFundsForm">
+    <div class="addFunds__container">
+        <form class = "box" method="POST" action="../FundsServlet" id="addFunds">
+            <h1 class="Formlbl">Add Funds</h1>
+            <input name="funds" type="number" min="1" placeholder="Add Funds" id="fundsField" required oninput="validity.valid||(value='');">
+            <input type="submit" value="Add Funds">
+            <div id="Funds-Error-Placeholder"></div>
+        </form>
+    </div>
+</div>
+
+<!-- Online users Section -->
+<div class="users" id="onlineUsers">
+    <div class="users__container">
+        <table id="userslist">
+            <caption class="table__heading">Online Users</caption>
+            <thead>
+            <tr>
+                <th>Username</th>
+                <th>Role</th>
+            </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+</div>
+
+<!-- User updates section -->
+<div class="Updates" id="userUpdates">
+    <div class="update__container">
+        <table id="updateList">
+            <caption class="table__heading">Notifications</caption>
+            <thead>
+            <tr>
+                <th>Updates</th>
+            </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

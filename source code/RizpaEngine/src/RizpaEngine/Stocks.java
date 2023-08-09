@@ -10,6 +10,7 @@ import java.util.*;
 public class Stocks{
     private Map<String, Stock> stockMap;
 
+    public Stocks() {this.stockMap = new HashMap<>();}
     public Stocks(RseStocks rseStocks) throws FileException {
         stockMap = new HashMap<>();
         for(RseStock rseStock : rseStocks.getRseStock())
@@ -17,6 +18,12 @@ public class Stocks{
             Stock stock = new Stock(rseStock);
             checkDuplicates(stock);
             stockMap.put(stock.getStockSymbol(),stock);
+        }
+    }
+    public void addStocks(Stocks stocks){
+        for(Stock stock: stocks.stockMap.values()){
+            if(!stockMap.containsKey(stock.getStockSymbol()))
+                stockMap.put(stock.getStockSymbol(),stock);
         }
     }
     public boolean hasStock(String symbol)
@@ -46,5 +53,4 @@ public class Stocks{
                 return true;
         return false;
     }
-
 }

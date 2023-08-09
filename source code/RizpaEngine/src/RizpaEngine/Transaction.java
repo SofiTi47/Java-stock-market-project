@@ -16,13 +16,13 @@ public class Transaction{
     private User executor;
 
     public enum TransactionStatus {
-        PENDING,COMPLETED;
+        PENDING,COMPLETED,INCOMPLETE;
     }
     public enum ActionType { //empty action type is used to load completed transactions
         BUY,SELL,EMPTY;
     }
     public enum TransactionType {
-        LMT,MKT;
+        LMT,MKT,FOK,IOC,FUND;
     }
 
     public Transaction(int rate, int stockAmount,TransactionType type,ActionType actionType, User initiator) {
@@ -44,6 +44,8 @@ public class Transaction{
     {
         this.setTransactionStatus(TransactionStatus.COMPLETED);
     }
+
+    public void setIncomplete() {this.setTransactionStatus(TransactionStatus.INCOMPLETE);}
 
     public void setStockAmount(int stockAmount) { this.stockAmount = stockAmount; }
 

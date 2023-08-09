@@ -10,6 +10,7 @@ import java.util.Map;
 public class Users {
     private Map<String, User> userMap;
 
+    public Users() {this.userMap = new HashMap<>();}
     public Users(RseUsers rseUsers, Stocks stocks) throws FileException {
         userMap = new HashMap<>();
         for(RseUser rseUser : rseUsers.getRseUser()){
@@ -17,6 +18,9 @@ public class Users {
             checkDuplicates(user);
             userMap.put(user.getName(),user);
         }
+    }
+    public void addUser(User user){
+        userMap.put(user.getName(),user);
     }
     private void checkDuplicates(User user) throws FileException {
         if(userMap.isEmpty())

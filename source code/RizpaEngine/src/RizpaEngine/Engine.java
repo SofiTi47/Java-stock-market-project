@@ -1,6 +1,8 @@
 package RizpaEngine;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 import RizpaDTO.*;
@@ -13,7 +15,7 @@ public interface Engine {
      * @param loadFile - the xml file path to load from
      * @throws FileException - throws file exception if the file is empty or has invalid data
      */
-    public void loadDataFromFile(File loadFile) throws FileException;
+    public void loadDataFromFile(InputStream loadFile, String userName) throws FileException, IOException;
 
     /**
      * @return - if the system has stock data
@@ -79,6 +81,11 @@ public interface Engine {
      */
     public List<DTOTransaction> MKTSell(String stockSymbol, int stockAmount, String initiator);
 
+    public List<DTOTransaction> IOCBuy(String stockSymbol, int stockAmount, int maxRate, String initiator);
+    public List<DTOTransaction> FOKBuy(String stockSymbol, int stockAmount, int maxRate, String initiator);
+    public List<DTOTransaction> IOCSell(String stockSymbol, int stockAmount, int minRate, String initiator);
+    public List<DTOTransaction> FOKSell(String stockSymbol, int stockAmount, int minRate, String initiator);
+
     /**
      *
      * @return a read only object containing all users
@@ -91,4 +98,8 @@ public interface Engine {
      * @return a read only object containing the user data
      */
     public DTOUser getUser(String userName);
+
+    public Transaction addFunds(String userName, int val);
+    public void addUser(String userName, boolean isAdmin);
+    public boolean addStock(String userName, String symbol, String companyName, int amount, int rate);
 }
